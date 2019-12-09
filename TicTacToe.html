@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BC&E</title>
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0%;
+            transform: rotate(90deg);
+        }
+
+        .tictactoe {
+
+            width: 918px;
+            height: 918px;
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 0;
+            background-color: rgb(255, 255, 255);
+            border: rgb(0, 0, 0) solid 6px;
+        }
+
+        .tictactoe__fields {
+            width: 300px;
+            height: 300px;
+            border: rgb(229, 255, 0) solid 3px;
+            background-color: black;
+            margin: 0%;
+            z-index: 1;
+            color: white;
+            line-height: 300px;
+            text-align: center;
+            font-size: 8rem;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transform: rotate(-90deg);
+        }
+
+        .tictactoe__fields:hover {
+            color: rgb(229, 255, 0);
+        }
+
+        .header {
+            width: 918px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 2rem;
+            border: rgb(0, 0, 0) solid 6px;
+            z-index: 99;
+            background-color: rgb(229, 255, 0);
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        #winningscreenX,
+        #winningscreenO {
+            background: black;
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            z-index: 98;
+            color: floralwhite;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 5vh;
+            padding: 20%;
+            text-align: center;
+            display: none;
+            transform: rotate(-90deg);
+        }
+
+        #replay {
+            padding: 10vh;
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        #replay:hover {
+            color: gray;
+        }
+
+        #notificationfield {
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="winningscreenX">
+        CONGRATULATIONS! <div> PLAYER X HAS WON
+        </div>
+        <div onclick="window.location.reload();" id="replay">RSTRT THE GME</div>
+    </div>
+    <div id="winningscreenO">
+        CONGRATULATIONS! <div> PLAYER O HAS WON
+        </div>
+        <div onclick="window.location.reload();" id="replay">RSTRT THE GME</div>
+    </div>
+
+    <div class="header">Butter, Cheese and Eggs</div>
+    <div id="notificationfield"></div>
+    <div class="tictactoe">
+        <div class="tictactoe__fields" onclick="setMove('one_one') ; this.onclick=null;" id="one_one"></div>
+        <div class="tictactoe__fields" onclick="setMove('one_two'); this.onclick=null;" id="one_two"></div>
+        <div class="tictactoe__fields" onclick="setMove('one_three'); this.onclick=null;" id="one_three"></div>
+        <div class="tictactoe__fields" onclick="setMove('two_one'); this.onclick=null;" id="two_one"></div>
+        <div class="tictactoe__fields" onclick="setMove('two_two'); this.onclick=null;" id="two_two"></div>
+        <div class="tictactoe__fields" onclick="setMove('two_three'); this.onclick=null;" id="two_three"></div>
+        <div class="tictactoe__fields" onclick="setMove('three_one'); this.onclick=null;" id="three_one"></div>
+        <div class="tictactoe__fields" onclick="setMove('three_two'); this.onclick=null;" id="three_two"></div>
+        <div class="tictactoe__fields" onclick="setMove('three_three'); this.onclick=null;" id="three_three"></div>
+    </div>
+
+    <script>
+
+        var turn = "X"
+        var fields = [
+            ["one_one", "one_two", "one_three"],
+            ["two_one", "two_two", "two_three"],
+            ["three_one", "three_two", "three_three"],
+            ["one_one", "two_one", "three_one"],
+            ["one_two", "two_two", "three_two"],
+            ["one_three", "two_three", "three_three"],
+            ["one_one", "two_two", "three_three"],
+            ["one_three", "two_two", "three_one"],
+        ];
+
+        function setMove(id) {
+            if (turn == "X") {
+                document.getElementById("notificationfield").innerHTML = "-Now it's O's turn-";
+                document.getElementById(id).innerHTML = turn;
+                turn = "O";
+                var xWon = hasPlayerWon('X');
+                if (xWon) {
+                    var q = document.getElementById('winningscreenX').style.display = 'block';
+                }
+            } else {
+                document.getElementById("notificationfield").innerHTML = "-Now it's X's turn-";
+                document.getElementById(id).innerHTML = turn;
+                turn = "X";
+                var oWon = hasPlayerWon('O');
+                if (oWon) {
+                    var q = document.getElementById('winningscreenO').style.display = 'block';
+                }
+            }
+        }
+
+        function hasPlayerWon(player) {
+            for (var i = 0; i < fields.length; i++) {
+                var winningCondition = fields[i];
+
+                if (document.getElementById(winningCondition[0]).innerHTML == player &&
+                    document.getElementById(winningCondition[1]).innerHTML == player &&
+                    document.getElementById(winningCondition[2]).innerHTML == player
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        // function checkStatusX() {
+        //     if (
+        //         ((document.getElementById(fields[0][0]).innerHTML == 'X') && (document.getElementById('two_one').innerHTML == 'X') && (document.getElementById('three_one').innerHTML == 'X')) ||
+        //         ((document.getElementById('two_one').innerHTML == 'X') && (document.getElementById('two_two').innerHTML == 'X') && (document.getElementById('two_three').innerHTML == 'X')) ||
+        //         ((document.getElementById('three_one').innerHTML == 'X') && (document.getElementById('three_two').innerHTML == 'X') && (document.getElementById('three_three').innerHTML == 'X')) ||
+        //         ((document.getElementById('one_one').innerHTML == 'X') && (document.getElementById('one_two').innerHTML == 'X') && (document.getElementById('one_three').innerHTML == 'X')) ||
+        //         ((document.getElementById('one_two').innerHTML == 'X') && (document.getElementById('two_two').innerHTML == 'X') && (document.getElementById('three_two').innerHTML == 'X')) ||
+        //         ((document.getElementById('one_three').innerHTML == 'X') && (document.getElementById('two_three').innerHTML == 'X') && (document.getElementById('three_three').innerHTML == 'X')) ||
+        //         ((document.getElementById('one_one').innerHTML == 'X') && (document.getElementById('two_two').innerHTML == 'X') && (document.getElementById('three_three').innerHTML == 'X')) ||
+        //         ((document.getElementById('one_three').innerHTML == 'X') && (document.getElementById('two_two').innerHTML == 'X') && (document.getElementById('three_one').innerHTML == 'X'))
+        //     ) {
+        //         document.getElementById("notificationfield2").innerHTML = "-Player X is the winner-";
+        //     }
+        // }
+
+        // function checkStatusO() {
+        //     if (
+        //         ((document.getElementById(one_one).innerHTML == 'O') && (document.getElementById(two_one).innerHTML == 'O') && (document.getElementById(three_one).innerHTML == 'O')) ||
+        //         ((document.getElementById(two_one).innerHTML == 'O') && (document.getElementById(two_two).innerHTML == 'O') && (document.getElementById(two_three).innerHTML == 'O')) ||
+        //         ((document.getElementById(three_one).innerHTML == 'O') && (document.getElementById(three_two).innerHTML == 'O') && (document.getElementById(three_three).innerHTML == 'O')) ||
+        //         ((document.getElementById(one_one).innerHTML == 'O') && (document.getElementById(one_two).innerHTML == 'O') && (document.getElementById(one_three).innerHTML == 'O')) ||
+        //         ((document.getElementById(one_two).innerHTML == 'O') && (document.getElementById(two_two).innerHTML == 'O') && (document.getElementById(three_two).innerHTML == 'O')) ||
+        //         ((document.getElementById(one_three).innerHTML == 'O') && (document.getElementById(two_three).innerHTML == 'O') && (document.getElementById(three_three).innerHTML == 'O')) ||
+        //         ((document.getElementById(one_one).innerHTML == 'O') && (document.getElementById(two_two).innerHTML == 'O') && (document.getElementById(three_three).innerHTML == 'O')) ||
+        //         ((document.getElementById(one_three).innerHTML == 'O') && (document.getElementById(two_two).innerHTML == 'O') && (document.getElementById(three_one).innerHTML == 'O'))
+        //     ) {
+        //         document.getElementById("notificationfield2").innerHTML = "-Player O is the winner-";
+        //     }
+        // }
+
+// var i = 2;
+//     function showX(id) {
+
+//     if ((i %2) == 0){
+// document.getElementById(id).innerHTML = "X";
+// i++;
+//   }
+//   else
+//   {
+//     document.getElementById(id).innerHTML = "O";
+//     i++;
+
+//   }}
+
+    </script>
+</body>
+
+</html>
